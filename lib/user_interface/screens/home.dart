@@ -61,6 +61,13 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(
+          Icons.add,
+          size: 45,
+        ),
+        onPressed: () {},
+      ),
       backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: Column(
@@ -89,40 +96,19 @@ class Home extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     top: kGlobalTopPadding,
-                    bottom: kGlobalBottomPadding,
+                    bottom: 4 * kGlobalBottomPadding,
                     left: kGlobalLeftPadding,
                     right: kGlobalRightPadding,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        flex: 9,
-                        child: ListView(
-                          children: const [
-                            Task(description: 'Buy milk'),
-                            Task(description: 'Buy soda'),
-                            Task(description: 'Buy meat'),
-                            Task(description: 'Buy bananas'),
-                            Task(description: 'Buy orange juice'),
-                            Task(description: 'Buy orange'),
-                            Task(description: 'Buy fini'),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: FloatingActionButton(
-                            child: const Icon(
-                              Icons.add,
-                              size: 45,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
+                  child: ListView(
+                    children: const [
+                      Task(description: 'Buy milk'),
+                      Task(description: 'Buy soda'),
+                      Task(description: 'Buy meat'),
+                      Task(description: 'Buy bananas'),
+                      Task(description: 'Buy orange juice'),
+                      Task(description: 'Buy orange'),
+                      Task(description: 'Buy fini'),
                     ],
                   ),
                 ),
