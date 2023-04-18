@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 class AddTask extends StatelessWidget {
   const AddTask({
     super.key,
+    this.addTask,
   });
+
+  final void Function(String?)? addTask;
 
   @override
   Widget build(BuildContext context) {
+    String? currentTextFieldValue;
+
     return Container(
       color: kInactiveBackgroundColor,
       child: Container(
@@ -34,10 +39,12 @@ class AddTask extends StatelessWidget {
                     fontSize: 30,
                     fontWeight: FontWeight.w400),
               ),
-              const TextField(
+              TextField(
                 autofocus: true,
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(),
+                onChanged: (newValue) {
+                  currentTextFieldValue = newValue;
+                },
               ),
               const SizedBox(
                 height: 10,
@@ -45,7 +52,14 @@ class AddTask extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (addTask != null) {
+                      addTask!(currentTextFieldValue);
+                      if (currentTextFieldValue != null) {
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: kMainColor,
                   ),

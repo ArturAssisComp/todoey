@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todoey/data_layer/models/task.dart';
 
 class TaskWidget extends StatelessWidget {
-  const TaskWidget({Key? key, required this.task}) : super(key: key);
+  const TaskWidget({Key? key, required this.task, this.onChanged, this.onTap})
+      : super(key: key);
   final Task task;
+  final void Function()? onTap;
+  final void Function(bool?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,11 @@ class TaskWidget extends StatelessWidget {
           decoration: task.isDone ? TextDecoration.lineThrough : null,
         ),
       ),
-      trailing: Checkbox(value: task.isDone, onChanged: (newValue) {}),
+      onTap: onTap,
+      trailing: Checkbox(
+        value: task.isDone,
+        onChanged: onChanged,
+      ),
     );
   }
 }
