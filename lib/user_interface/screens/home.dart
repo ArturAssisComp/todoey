@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todoey/constants.dart';
-import 'package:todoey/user_interface/widgets/task.dart';
+import 'package:todoey/user_interface/widgets/task_widget.dart';
 import 'package:todoey/user_interface/screens/add_task.dart';
+import 'package:todoey/data_layer/models/task.dart';
 
 /// This constant defines the upper part of the screen.
 const _kUpperPart = [
@@ -57,7 +58,17 @@ const _kUpperPart = [
 ];
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
+
+  List<Task> _tasks = [
+    Task(description: 'Buy milk'),
+    Task(description: 'Buy soda'),
+    Task(description: 'Buy meat'),
+    Task(description: 'Buy bananas'),
+    Task(description: 'Buy orange juice'),
+    Task(description: 'Buy orange'),
+    Task(description: 'Buy fini'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -112,16 +123,11 @@ class Home extends StatelessWidget {
                     left: kGlobalLeftPadding,
                     right: kGlobalRightPadding,
                   ),
-                  child: ListView(
-                    children: const [
-                      Task(description: 'Buy milk'),
-                      Task(description: 'Buy soda'),
-                      Task(description: 'Buy meat'),
-                      Task(description: 'Buy bananas'),
-                      Task(description: 'Buy orange juice'),
-                      Task(description: 'Buy orange'),
-                      Task(description: 'Buy fini'),
-                    ],
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return TaskWidget(task: _tasks[index]);
+                    },
+                    itemCount: _tasks.length,
                   ),
                 ),
               ),
