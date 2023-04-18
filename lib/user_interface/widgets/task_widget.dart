@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todoey/data_layer/models/task.dart';
 
 class TaskWidget extends StatelessWidget {
-  const TaskWidget({Key? key, required this.task, this.onChanged, this.onTap})
+  const TaskWidget(
+      {Key? key,
+      required this.description,
+      required this.isDone,
+      this.onChanged,
+      this.onTap})
       : super(key: key);
-  final Task task;
+  final String description;
+  final bool isDone;
   final void Function()? onTap;
   final void Function(bool?)? onChanged;
 
@@ -12,14 +17,14 @@ class TaskWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        task.description,
+        description,
         style: TextStyle(
-          decoration: task.isDone ? TextDecoration.lineThrough : null,
+          decoration: isDone ? TextDecoration.lineThrough : null,
         ),
       ),
       onTap: onTap,
       trailing: Checkbox(
-        value: task.isDone,
+        value: isDone,
         onChanged: onChanged,
       ),
     );

@@ -2,26 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todoey/constants.dart';
 import 'package:todoey/user_interface/widgets/task_widget.dart';
 import 'package:todoey/user_interface/screens/add_task.dart';
-import 'package:todoey/data_layer/models/task.dart';
+import 'package:todoey/data_layer/providers/task_list_provider.dart';
+import 'package:provider/provider.dart';
 
 /// This constant defines the upper part of the screen.
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final List<Task> _tasks = [
-    Task(description: 'Buy milk'),
-    Task(description: 'Buy soda'),
-    Task(description: 'Buy meat'),
-    Task(description: 'Buy bananas'),
-    Task(description: 'Buy orange juice'),
-    Task(description: 'Buy orange'),
-    Task(description: 'Buy fini'),
-  ];
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +18,17 @@ class _HomeState extends State<Home> {
           size: 45,
         ),
         onPressed: () {
+          final provider =
+              Provider.of<TaskListProvider>(context, listen: false);
           showModalBottomSheet(
             context: context,
-            builder: (context) => SingleChildScrollView(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: AddTask(
-                addTask: (newTaskDescription) {
-                  if (newTaskDescription != null) {
-                    final Task task = Task(description: newTaskDescription);
-                    setState(() {
-                      _tasks.add(task);
-                    });
-                  }
-                },
+            builder: (context) => ChangeNotifierProvider.value(
+              value: provider,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: const AddTask(),
               ),
             ),
             isScrollControlled: true,
@@ -107,7 +89,7 @@ class _HomeState extends State<Home> {
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              '${_tasks.length} tasks',
+                              '${Provider.of<TaskListProvider>(context).length} tasks',
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
@@ -138,22 +120,28 @@ class _HomeState extends State<Home> {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       return TaskWidget(
-                          task: _tasks[index],
+                          description: Provider.of<TaskListProvider>(context)
+                              .getTaskDescription(index),
+                          isDone: Provider.of<TaskListProvider>(context)
+                              .getTaskState(index),
                           onTap: () {
-                            setState(() {
-                              _tasks[index].toggleIsDone();
-                            });
+                            Provider.of<TaskListProvider>(context,
+                                    listen: false)
+                                .toggleTask(index: index);
                           },
                           onChanged: (newValue) {
                             if (newValue != null &&
-                                newValue != _tasks[index].isDone) {
-                              setState(() {
-                                _tasks[index].toggleIsDone();
-                              });
+                                newValue !=
+                                    Provider.of<TaskListProvider>(context,
+                                            listen: false)
+                                        .getTaskState(index)) {
+                              Provider.of<TaskListProvider>(context,
+                                      listen: false)
+                                  .toggleTask(index: index);
                             }
                           });
                     },
-                    itemCount: _tasks.length,
+                    itemCount: Provider.of<TaskListProvider>(context).length,
                   ),
                 ),
               ),

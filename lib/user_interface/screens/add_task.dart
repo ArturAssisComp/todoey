@@ -1,13 +1,13 @@
 import 'package:todoey/constants.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:todoey/data_layer/providers/task_list_provider.dart';
+import 'package:todoey/data_layer/models/task.dart';
 
 class AddTask extends StatelessWidget {
   const AddTask({
     super.key,
-    this.addTask,
   });
-
-  final void Function(String?)? addTask;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +53,11 @@ class AddTask extends StatelessWidget {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
-                    if (addTask != null) {
-                      addTask!(currentTextFieldValue);
-                      if (currentTextFieldValue != null) {
-                        Navigator.pop(context);
-                      }
+                    if (currentTextFieldValue != null) {
+                      Provider.of<TaskListProvider>(context, listen: false)
+                          .addTask(
+                              task: Task(description: currentTextFieldValue!));
+                      Navigator.pop(context);
                     }
                   },
                   style: TextButton.styleFrom(
