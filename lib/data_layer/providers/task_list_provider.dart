@@ -30,4 +30,9 @@ class TaskListProvider extends ChangeNotifier {
     _tasks[index].toggleIsDone();
     notifyListeners();
   }
+
+  void deleteTask({required final int index}) {
+    _tasks.removeAt(index);
+    notifyListeners();
+  }
 }

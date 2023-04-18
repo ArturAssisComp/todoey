@@ -120,26 +120,30 @@ class Home extends StatelessWidget {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       return TaskWidget(
-                          description: Provider.of<TaskListProvider>(context)
-                              .getTaskDescription(index),
-                          isDone: Provider.of<TaskListProvider>(context)
-                              .getTaskState(index),
-                          onTap: () {
+                        description: Provider.of<TaskListProvider>(context)
+                            .getTaskDescription(index),
+                        isDone: Provider.of<TaskListProvider>(context)
+                            .getTaskState(index),
+                        onTap: () {
+                          Provider.of<TaskListProvider>(context, listen: false)
+                              .toggleTask(index: index);
+                        },
+                        onChanged: (newValue) {
+                          if (newValue != null &&
+                              newValue !=
+                                  Provider.of<TaskListProvider>(context,
+                                          listen: false)
+                                      .getTaskState(index)) {
                             Provider.of<TaskListProvider>(context,
                                     listen: false)
                                 .toggleTask(index: index);
-                          },
-                          onChanged: (newValue) {
-                            if (newValue != null &&
-                                newValue !=
-                                    Provider.of<TaskListProvider>(context,
-                                            listen: false)
-                                        .getTaskState(index)) {
-                              Provider.of<TaskListProvider>(context,
-                                      listen: false)
-                                  .toggleTask(index: index);
-                            }
-                          });
+                          }
+                        },
+                        onLongPress: () {
+                          Provider.of<TaskListProvider>(context, listen: false)
+                              .deleteTask(index: index);
+                        },
+                      );
                     },
                     itemCount: Provider.of<TaskListProvider>(context).length,
                   ),
