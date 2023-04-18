@@ -14,11 +14,17 @@ class TaskListProvider extends ChangeNotifier {
   int get length => _tasks.length;
 
   String getTaskDescription(int index) {
-    return _tasks[index].description;
+    if (index >= 0 && index < length) {
+      return _tasks[index].description;
+    }
+    throw IndexError.withLength(index, length);
   }
 
   bool getTaskState(int index) {
-    return _tasks[index].isDone;
+    if (index >= 0 && index < length) {
+      return _tasks[index].isDone;
+    }
+    throw IndexError.withLength(index, length);
   }
 
   void addTask({required final Task task}) {
@@ -27,12 +33,20 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   void toggleTask({required final int index}) {
-    _tasks[index].toggleIsDone();
-    notifyListeners();
+    if (index >= 0 && index < length) {
+      _tasks[index].toggleIsDone();
+      notifyListeners();
+    } else {
+      throw IndexError.withLength(index, length);
+    }
   }
 
-  void deleteTask({required final int index}) {
-    _tasks.removeAt(index);
-    notifyListeners();
+  void deleteTask({required int index}) {
+    if (index >= 0 && index < length) {
+      _tasks.removeAt(index);
+      notifyListeners();
+    } else {
+      throw IndexError.withLength(index, length);
+    }
   }
 }
