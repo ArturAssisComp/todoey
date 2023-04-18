@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoey/constants.dart';
 import 'package:todoey/user_interface/widgets/task.dart';
+import 'package:todoey/user_interface/screens/add_task.dart';
 
 /// This constant defines the upper part of the screen.
 const _kUpperPart = [
@@ -15,7 +16,7 @@ const _kUpperPart = [
           radius: 30,
           child: Icon(
             Icons.list,
-            color: kBackgroundColor,
+            color: kMainColor,
             size: 45,
           ),
         ),
@@ -66,9 +67,20 @@ class Home extends StatelessWidget {
           Icons.add,
           size: 45,
         ),
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: const AddTask(),
+            ),
+            isScrollControlled: true,
+          );
+        },
       ),
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kMainColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
